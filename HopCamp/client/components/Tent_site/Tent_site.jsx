@@ -6,8 +6,11 @@ import Individual_Lodging_site from './Individual_Lodging_site';
 
 // import site1_campground from '/HopCamp/HopCamp/client/assets/site1 campground.webp'
 const Tent_site = () => {
+    const defaultSiteAmnt = 2;
     const [tentsiteData,setTentSiteData]=useState([]);
     const [lodgingData,setlodgingData] = useState([]);
+    const [visibleSiteData,setVisibleSiteData] = useState([]);
+
     // const tentSiteData = {
     //     id: 1,
     //     name: 'Site 1- Redwood Camp',
@@ -35,8 +38,18 @@ const Tent_site = () => {
     //     capacity: "Sleeps 2",
     //     description: "The Eagle's Nest Treehouse Farm Stay offers ..."
     // }
+    const allSiteAmnt = tentsiteData.length;
+    
+    const handleShowMore = () => {
+        if (visibleSiteData === defaultSiteAmnt) {
+            setVisibleSiteData(allSiteAmnt);
+        }else {
+            setVisibleSiteData(defaultSiteAmnt);
+        }
+    };
+
     useEffect(()=>{
-        fetch('http://localhost:5000/api/campsites').then(responses=>responses.json())
+        fetch('http://localhost:5001/api/campsites').then(responses=>responses.json())
         .then(result=>{
             let rvArr= [];
             let lodgingArr = [];
@@ -61,7 +74,8 @@ const Tent_site = () => {
         {tentsiteData.map((element, index) => (
             <Individual_Tent_site key={index} data={element}/>
 
-        ))}
+            ))}
+            <button className='show-more-btn' onClick={handleShowMore}>{visibleSiteData === defaultSiteAmnt ? 'Show More' : 'Show Less'}</button>
     </div>
 
     <div className='tent-sites' >
